@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZooE - Your Ultimate Zoo Experience</title>
+    <meta name="description" content="Discover ZooE - a modern zoo experience with exotic animals, educational programs, and conservation initiatives. Plan your visit today!">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦁</text></svg>">
+    <style>
+        /* CSS Variables for Dark/Light Mode */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --accent-primary: #2d7a2d;
+            --accent-secondary: #38a169;
+            --accent-hover: #22c55e;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-primary: #16a34a;
+            --accent-secondary: #22c55e;
+            --accent-hover: #4ade80;
+            --border-color: #334155;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --card-bg: #1e293b;
+            --nav-bg: rgba(30, 41, 59, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px var(--shadow-color);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://placehold.co/1920x1080?text=Majestic+African+safari+landscape+with+lions+elephants+and+giraffes+in+golden+sunset+lighting') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--text-primary);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Animals Section */
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .animal-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        .animal-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-safe {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-endangered {
+            background: #ef4444;
+            color: white;
+        }
+
+        .status-vulnerable {
+            background: #f59e0b;
+            color: white;
+        }
+
+        /* Visit Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .info-card p {
+            color: var(--text-secondary);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 3rem auto 0;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 3rem 0 1rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--nav-bg);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .animals-grid,
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--accent-primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                🦁 ZooE
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#animals">Animals</a></li>
+                <li><a href="#visit">Visit</a></li>
+                <li><a href="#conservation">Conservation</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                    🌙
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content fade-in">
+            <h1>Welcome to ZooE</h1>
+            <p>Discover the wonders of wildlife through conservation, education, and unforgettable experiences. Join us in protecting our planet's most magnificent creatures.</p>
+            <div class="cta-buttons">
+                <a href="#visit" class="btn btn-primary">Plan Your Visit</a>
+                <a href="#animals" class="btn btn-secondary">Meet Our Animals</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animals Section -->
+    <section id="animals" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Amazing Animals</h2>
+            <p class="section-subtitle fade-in">Meet our diverse collection of wildlife from around the globe. Each animal has a unique story and plays a vital role in our conservation efforts.</p>
+            
+            <div class="animals-grid">
+                <div class="animal-card fade-in">
+                    <img src="https://placehold.co/400x250?text=Majestic+African+lion+male+with+golden+mane+in+natural+savanna+habitat" alt="African Lion - King of the savanna">
+                    <div class="card-content">
+                        <h3>African Lion</h3>
+                        <p>The king of beasts, known for their majestic manes and powerful roars that can be heard up to 5 miles away.</p>
+                        <span class="status-badge status-vulnerable">Vulnerable</span>
+                    </div>
+                </div>
+                
+                <div class="animal-card fade-in">
+                    <img src="https://placehold.co/400x250?text=Giant+panda+eating+bamboo+in+lush+green+forest+environment" alt="Giant Panda - Bamboo specialist from China">
+                    <div class="card-content">
+                        <h3>Giant Panda</h3>
+                        <p>These gentle giants spend 14 hours a day eating bamboo and are beloved symbols of wildlife conservation.</p>
+                        <span class="status-badge status-vulnerable">Vulnerable</span>
+                    </div>
+                </div>
+                
+                <div class="animal-card fade-in">
+                    <img src="https://placehold.co/400x250?text=Siberian+tiger+prowling+through+snowy+forest+landscape" alt="Siberian Tiger - Largest cat species">
+                    <div class="card-content">
+                        <h3>Siberian Tiger</h3>
+                        <p>The largest cat in the world, these magnificent predators are masters of stealth and power.</p>
+                        <span class="status-badge status-endangered">Endangered</span>
+                    </div>
+                </div>
+                
+                <div class="animal-card fade-in">
+                    <img src="https://placehold.co/400x250?text=Family+of+elephants+walking+together+across+African+grasslands" alt="African Elephant - Gentle giants of Africa">
+                    <div class="card-content">
+                        <h3>African Elephant</h3>
+                        <p>Intelligent and social giants with remarkable memories, they're essential to their ecosystem's health.</p>
+                        <span class="status-badge status-endangered">Endangered</span>
+                    </div>
+                </div>
+                
+                <div class="animal-card fade-in">
+                    <img src="https://placehold.co/400x250?text=Colorful+tropical+birds+perched+in+rainforest+canopy" alt="Tropical Birds - Colorful rainforest species">
+                    <div class="card-content">
+                        <h3>Tropical Birds</h3>
+                        <p>A vibrant collection of exotic birds featuring stunning plumage and fascinating behaviors.</p>
+                        <span class="status-badge status-safe">Least Concern</span>
+                    </div>
+                </div>
+                
+                <div class="animal-card fade-in">
+                    <img src="https://placehold.co/400x250?text=Swimming+penguins+diving+in+crystal+clear+Antarctic+waters" alt="Penguins - Antarctic swimmers">
+                    <div class="card-content">
+                        <h3>Penguins</h3>
+                        <p>These charming aquatic birds are expert swimmers and devoted parents in harsh Antarctic conditions.</p>
+                        <span class="status-badge status-safe">Least Concern</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visit Info Section -->
+    <section id="visit" class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <h2 class="section-title fade-in">Plan Your Visit</h2>
+            <p class="section-subtitle fade-in">Everything you need to know for an amazing day at ZooE. We're committed to making your visit comfortable and memorable.</p>
+            
+            <div class="info-grid">
+                <div class="info-card fade-in">
+                    <div class="icon">🎫</div>
+                    <h3>Tickets & Pricing</h3>
+                    <p><strong>Adults:</strong> $25<br>
+                    <strong>Children (3-12):</strong> $15<br>
+                    <strong>Seniors (65+):</strong> $20<br>
+                    <strong>Family Pack:</strong> $75</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🕐</div>
+                    <h3>Opening Hours</h3>
+                    <p><strong>Summer:</strong> 9:00 AM - 7:00 PM<br>
+                    <strong>Winter:</strong> 9:00 AM - 5:00 PM<br>
+                    <strong>Weekends:</strong> 8:00 AM - 8:00 PM<br>
+                    <em>Open 365 days a year</em></p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🗺️</div>
+                    <h3>Zoo Map</h3>
+                    <p>Download our interactive map to navigate easily and plan your route. Find restrooms, dining, and all animal exhibits.</p>
+                    <a href="#" class="btn btn-primary" style="margin-top: 1rem; padding: 8px 20px; font-size: 0.9rem;">Download Map</a>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🚗</div>
+                    <h3>Parking & Access</h3>
+                    <p><strong>Free parking</strong> available<br>
+                    Wheelchair accessible paths<br>
+                    Public transport nearby<br>
+                    <em>GPS: 123 Zoo Avenue</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conservation Section -->
+    <section id="conservation" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Conservation Efforts</h2>
+            <p class="section-subtitle fade-in">ZooE is dedicated to wildlife conservation through breeding programs, research, and education. Together, we're making a difference for endangered species worldwide.</p>
+            
+            <div class="info-grid">
+                <div class="info-card fade-in">
+                    <div class="icon">🌱</div>
+                    <h3>Breeding Programs</h3>
+                    <p>We participate in global breeding programs for endangered species, helping maintain genetic diversity and population stability.</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🔬</div>
+                    <h3>Research Initiatives</h3>
+                    <p>Our research team studies animal behavior, health, and conservation strategies to benefit wild populations.</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🎓</div>
+                    <h3>Education Programs</h3>
+                    <p>Educational workshops and school programs inspire the next generation of wildlife conservationists.</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">💚</div>
+                    <h3>Adopt an Animal</h3>
+                    <p>Support our conservation efforts by symbolically adopting your favorite animal and contributing to their care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <h2 class="section-title fade-in">Events & Experiences</h2>
+            <p class="section-subtitle fade-in">Join us for special events, educational programs, and unique behind-the-scenes experiences that bring you closer to wildlife.</p>
+            
+            <div class="info-grid">
+                <div class="info-card fade-in">
+                    <div class="icon">📷</div>
+                    <h3>Photography Tours</h3>
+                    <p>Capture stunning wildlife photos with guidance from professional photographers. Early morning sessions available for the best lighting.</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🍽️</div>
+                    <h3>Keeper Talks & Feeding</h3>
+                    <p>Watch animals being fed and learn fascinating facts from our expert keepers. Daily sessions at various exhibits.</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🎂</div>
+                    <h3>Birthday Parties</h3>
+                    <p>Celebrate special occasions with an unforgettable zoo party package including private tours and animal encounters.</p>
+                </div>
+                
+                <div class="info-card fade-in">
+                    <div class="icon">🌙</div>
+                    <h3>Night Safari</h3>
+                    <p>Experience the zoo after dark and observe nocturnal animal behaviors on our special evening tours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">About ZooE</h2>
+            <p class="section-subtitle fade-in">Founded in 1985, ZooE has been a leader in wildlife conservation, education, and research for nearly four decades.</p>
+            
+            <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                <div class="fade-in" style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--accent-primary); margin-bottom: 1rem; font-size: 1.5rem;">Our Mission</h3>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">
+                        To inspire conservation action through exceptional animal care, immersive education, and groundbreaking research. We believe that connecting people with wildlife creates passionate advocates for conservation.
+                    </p>
+                </div>
+                
+                <div class="fade-in" style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--accent-primary); margin-bottom: 1rem; font-size: 1.5rem;">Our Impact</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-primary);">500+</div>
+                            <div style="color: var(--text-secondary);">Animals in our care</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-primary);">15</div>
+                            <div style="color: var(--text-secondary);">Conservation programs</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-primary);">1M+</div>
+                            <div style="color: var(--text-secondary);">Annual visitors</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-primary);">25</div>
+                            <div style="color: var(--text-secondary);">Species saved</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fade-in">
+                    <h3 style="color: var(--accent-primary); margin-bottom: 1rem; font-size: 1.5rem;">Our Team</h3>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">
+                        Our dedicated team includes world-class veterinarians, animal behaviorists, conservation biologists, and passionate educators. Together, we work tirelessly to provide the highest standard of animal care while advancing conservation science.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <h2 class="section-title fade-in">Contact Us</h2>
+            <p class="section-subtitle fade-in">Have questions? Planning a group visit? We're here to help make your ZooE experience extraordinary.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;" class="fade-in">
+                <div>
+                    <h3 style="color: var(--accent-primary); margin-bottom: 1.5rem;">Get in Touch</h3>
+                    <div style="space-y: 1rem;">
+                        <div style="margin-bottom: 1rem;">
+                            <strong>📍 Address:</strong><br>
+                            123 Zoo Avenue<br>
+                            Wildlife City, WC 12345
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>📞 Phone:</strong><br>
+                            General: (555) 123-ZOOE<br>
+                            Groups: (555) 123-GROUP
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>✉️ Email:</strong><br>
+                            info@zooe.com<br>
+                            education@zooe.com
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>🌐 Social Media:</strong><br>
+                            Follow us @ZooEOfficial on all platforms
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" style="margin: 0;">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="What can we help you with?">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" required placeholder="Tell us how we can assist you..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#animals">Animals</a>
+                <a href="#visit">Visit</a>
+                <a href="#conservation">Conservation</a>
+                <a href="#events">Events</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p style="color: var(--text-muted);">
+                © 2024 ZooE. All rights reserved. | 
+                <a href="#" style="color: var(--text-muted);">Privacy Policy</a> | 
+                <a href="#" style="color: var(--text-muted);">Terms of Service</a>
+            </p>
+            <p style="color: var(--text-muted); margin-top: 1rem;">
+                🦁 Dedicated to wildlife conservation and education since 1985
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', currentTheme);
+        
+        // Update theme toggle icon
+        function updateThemeIcon() {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+        }
+        
+        updateThemeIcon();
+        
+        themeToggle.addEventListener('click', () => {
+            const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon();
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.textContent = '☰';
+                }
+            });
+        });
+
+        // Intersection Observer for Fade In Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Active Navigation Highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinksArray = document.querySelectorAll('.nav-links a[href^="#"]');
+
+        function highlightActiveSection() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinksArray.forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.color = 'var(--accent-primary)';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveSection);
+
+        // Contact Form Submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+            // Simple validation
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = '<span class="loading"></span> Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your message! We\'ll get back to you soon.');
+                this.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Dynamic Loading Animation for Animal Cards
+        const animalCards = document.querySelectorAll('.animal-card');
+        animalCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Enhanced Navbar Scroll Effect
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                // Scrolling up
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Trigger initial animations
+            setTimeout(() => {
+                document.querySelector('.hero .fade-in').classList.add('visible');
+            }, 500);
+            
+            // Highlight active section on page load
+            highlightActiveSection();
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.animal-card, .info-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Easter egg: Konami code for special animation
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up Up Down Down Left Right Left Right B A
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > 10) {
+                konamiCode.shift();
+            }
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                // Easter egg triggered!
+                document.body.style.animation = 'rainbow 2s ease-in-out';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 2000);
+            }
+        });
+
+        // Add rainbow animation for easter egg
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                50% { filter: hue-rotate(180deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
